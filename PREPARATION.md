@@ -1,3 +1,27 @@
-# ConvertKit Connector - PREPARATION.md
+# Airbyte Connector — Preparation
 
-Standard documentation for ConvertKit Connector in Imperal Cloud.
+**Category:** C35. Data Integration & ETL / Reverse ETL  
+**Status:** Canonical App Preparation (APP_PREPARATION_STANDARD.md)  
+**Target API:** https://api.airbyte.com/v1  
+
+## 1. Паспорт приложения
+- **Название:** Airbyte Connector
+- **Категория:** C35. Data Integration & ETL / Reverse ETL
+- **Официальный сайт:** https://airbyte.com
+- **Модель доступа:** Bearer Token / Client Credentials
+
+## 2. Человеческая проблема
+Когда Data Platform Engineer сталкивается с задачей открытая и управляемая репликация данных между источниками и приемниками с поддержкой кастомных коннекторов, ей приходится вручную переключаться между сервисами, что приводит к задержкам и потере контроля данных.
+
+## 3. Пользователи и роли
+- **Data Platform Engineer:** операционная работа, контроль выполнения сценариев.
+- **Администратор безопасности / ИТ:** управление правами, ротация ключей доступа.
+- **Оператор Imperal Cloud:** автоматизация сценариев через безопасные протоколы ICNLI.
+
+## 4. Первичный сценарий
+`проверка состояния соединения -> запуск задания синхронизации -> получение журнала выполнения`.
+
+## 5. Границы и безопасность
+- Никаких синтетических шаблонов от других предметных областей.
+- Использование только принципа Bring Your Own Credentials (BYOC).
+- Маскирование секретов и аудит всех изменений.

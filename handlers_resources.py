@@ -10,7 +10,7 @@ from schemas import (
 from handlers_connection import resolve_client
 
 @chat.function("list_pipelines", "List pipelines in Airbyte.", action_type="read", chain_callable=True, event="airbyte-connector.list_pipelines", effects=["read:pipelines"], data_model=PipelineList)
-async def list_pipelines(params: ListPipelineParams, ctx) -> ActionResult:
+async def list_pipelines(ctx, params: ListPipelineParams) -> ActionResult:
     client = await resolve_client(ctx, params.connection_id)
     try:
         raw_items = await client.list_pipelines(limit=params.limit)
@@ -24,7 +24,7 @@ async def list_pipelines(params: ListPipelineParams, ctx) -> ActionResult:
         return ActionResult.error(f"Error listing pipelines: {e}")
 
 @chat.function("get_pipeline", "Get details of one Pipeline in Airbyte.", action_type="read", chain_callable=True, event="airbyte-connector.get_pipeline", effects=["read:pipeline"], data_model=PipelineRecord)
-async def get_pipeline(params: GetPipelineParams, ctx) -> ActionResult:
+async def get_pipeline(ctx, params: GetPipelineParams) -> ActionResult:
     client = await resolve_client(ctx, params.connection_id)
     try:
         r = await client.get_pipeline(params.pipeline_id)
@@ -35,7 +35,7 @@ async def get_pipeline(params: GetPipelineParams, ctx) -> ActionResult:
         return ActionResult.error(f"Error retrieving Pipeline: {e}")
 
 @chat.function("audit_pipeline_health", "Audit health of Airbyte pipelines and connectivity.", action_type="read", chain_callable=True, event="airbyte-connector.audit_pipeline_health", effects=["read:audit"], data_model=AuditHealthReport)
-async def audit_pipeline_health(params: ConnectionIdParams, ctx) -> ActionResult:
+async def audit_pipeline_health(ctx, params: ConnectionIdParams) -> ActionResult:
     client = await resolve_client(ctx, params.connection_id)
     try:
         items = await client.list_pipelines(limit=50)

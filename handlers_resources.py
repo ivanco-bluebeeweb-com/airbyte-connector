@@ -19,7 +19,7 @@ async def list_pipelines(params: ListPipelineParams, ctx) -> ActionResult:
             rid = str(r.get("id") or r.get("key") or r.get("uuid") or "unknown")
             rname = r.get("name") or r.get("title") or r.get("label") or rid
             items.append({"id": rid, "name": rname, "status": r.get("status"), "created_at": r.get("createdAt") or r.get("created_at"), "raw": r})
-        return ActionResult.ok({"pipelines": items, "total": len(items)}, summary=f"Found {len(items)} pipelines.")
+        return ActionResult.success({"pipelines": items, "total": len(items)}, summary=f"Found {len(items)} pipelines.")
     except Exception as e:
         return ActionResult.error(f"Error listing pipelines: {e}")
 
@@ -30,7 +30,7 @@ async def get_pipeline(params: GetPipelineParams, ctx) -> ActionResult:
         r = await client.get_pipeline(params.pipeline_id)
         rid = str(r.get("id") or params.pipeline_id)
         rname = r.get("name") or r.get("title") or rid
-        return ActionResult.ok({"id": rid, "name": rname, "status": r.get("status"), "created_at": r.get("createdAt") or r.get("created_at"), "raw": r}, summary=f"Retrieved Pipeline {rid}.")
+        return ActionResult.success({"id": rid, "name": rname, "status": r.get("status"), "created_at": r.get("createdAt") or r.get("created_at"), "raw": r}, summary=f"Retrieved Pipeline {rid}.")
     except Exception as e:
         return ActionResult.error(f"Error retrieving Pipeline: {e}")
 
@@ -39,7 +39,7 @@ async def audit_pipeline_health(params: ConnectionIdParams, ctx) -> ActionResult
     client = await resolve_client(ctx, params.connection_id)
     try:
         items = await client.list_pipelines(limit=50)
-        return ActionResult.ok({
+        return ActionResult.success({
             "healthy": True,
             "total_pipelines": len(items),
             "details": {"sample_count": len(items)},
